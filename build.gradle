@@ -1,0 +1,42 @@
+buildscript {
+    repositories {
+        maven { url "http://repo.spring.io/libs-release" }
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.1.3.RELEASE")
+    }
+}
+
+task wrapper(type: Wrapper) {
+  description = "Builds the gradlew wrapper."
+  gradleVersion = '1.12'
+}
+
+
+apply plugin: "java"
+apply plugin: "spring-boot"
+
+version = "0.0.1"
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url "http://repo.spring.io/libs-release" }
+    maven { url "http://repo.spring.io/libs-milestone" }
+}
+
+dependencies {
+    compile ("org.springframework.boot:spring-boot-starter")
+//    compile ("org.springframework.boot:spring-boot-starter-data-rest")
+    compile ("org.springframework.data:spring-data-neo4j")
+    compile ("org.springframework.data:spring-data-neo4j-rest:3.1.1.RELEASE")
+
+    compile("org.hibernate:hibernate-validator")
+}
+
+// to debug
+//applicationDefaultJvmArgs = [
+//"-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
+//]
