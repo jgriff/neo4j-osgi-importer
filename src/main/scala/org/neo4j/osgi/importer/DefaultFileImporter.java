@@ -6,6 +6,7 @@ import org.neo4j.osgi.importer.entity.PackageExport;
 import org.neo4j.osgi.importer.entity.PackageImport;
 import org.neo4j.osgi.importer.repository.BundleRepository;
 import org.neo4j.osgi.importer.repository.PackageRepository;
+import org.neo4j.osgi.parser.Import;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,50 +22,24 @@ import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
 
 /**
+ * The default {@link org.neo4j.osgi.importer.FileImporter}, backed by a scala
+ * {@link org.neo4j.osgi.parser.Import}.
+ *
  * @author <a href="mailto:justinrgriffin@gmail.com">Justin Griffin</a>
  * @since 0.0.1
  */
-public class BundleDirectoryImporter implements Runnable {
-    private static final Logger LOG = LoggerFactory.getLogger(BundleDirectoryImporter.class);
+public class DefaultFileImporter implements FileImporter {
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultFileImporter.class);
 
-    private final File directory;
     @Autowired
     private BundleRepository bundleRepository;
     @Autowired
     private PackageRepository packageRepository;
 
-    public BundleDirectoryImporter(File directory) {
-        this.directory = directory;
-    }
+    public void importBundle(File file) throws IOException {
+        if (file == null  ||  !file.exists()) throw new IllegalArgumentException("File does not exist: " + file);
 
-    @Override
-    public void run() {
-        // TODO scan the directory, parse for osgi bundles, and populate the database
-        for (File file : directory.listFiles()) {
-            if (!file.isDirectory() && file.getName().toLowerCase().endsWith(".jar")) {
-                try {
-                    importBundle(file);
-                } catch (IOException e) {
-                    LOG.error("Error inspecting bundle: " + file, e);
-                }
-            }
-        }
 
-//        Package pkg = new Package("com.baz");
-//        packageRepository.save(pkg);
-//
-//        Bundle b1 = new Bundle()
-//                .setBundleSymbolicName("com.foo")
-//                .setVersion("1.0.0.M1")
-//                .addPackageImport(new PackageImport()
-//                        .setMinVersion("1.0.0")
-//                        .setMaxVersion("2.0.0")
-//                        .setPackage(pkg));
-//
-//        bundleRepository.save(b1);
-    }
-
-    private void importBundle(File file) throws IOException {
         LOG.trace("Inspecting bundle: " + file);
         JarInputStream jarStream = new JarInputStream(new FileInputStream(file));
         Manifest mf = jarStream.getManifest();
@@ -83,8 +58,7 @@ public class BundleDirectoryImporter implements Runnable {
             String exportPackage = attrs.getValue("Export-Package");
             LOG.trace("Export-Package: " + exportPackage);
 
-            if (StringUtils.hasLength(bsn) &&
-                    StringUtils.hasLength(version)) {
+            if (StringUtils.hasLength(bsn) && StringUtils.hasLength(version)) {
 
                 List<PackageImport> packageImports = parseImportPackageStatement(importPackage);
                 List<PackageExport> packageExports = parseExportPackageStatement(exportPackage);
@@ -110,30 +84,25 @@ public class BundleDirectoryImporter implements Runnable {
         }
     }
 
-    // TODO look into using bndtools (https://github.com/bndtools/bndtools) to do the heavy lifting parsing the MANIFEST.MF for this info
-    private List<PackageImport> parseImportPackageStatement(String importPackage) {
-        // for now, generate some dummy package imports to show proof of concept
-        List<PackageImport> packageImports = new ArrayList<PackageImport>();
-        final int pkgCnt = (int) (Math.random() * 6 + 1);
-        for (int i = 0; i < pkgCnt; i++) {
-            packageImports.add(new PackageImport()
-                .setMinVersion("1.0.0")
-                .setMaxVersion("2.0.0")
-                .setPackage(randomPackage()));
-        }
+    private <T> List<T> toList(scala.collection.immutable.List<T> scalaList) {
+        List<T> list = scala.collection.JavaConverters.asJavaListConverter(scalaList).asJava();
+        return list;
+    }
 
-        return packageImports;
+    private List<PackageImport> parseImportPackageStatement(String importPackage) {
+        return toList(Import.parse(importPackage));
     }
 
     private List<PackageExport> parseExportPackageStatement(String exportPackage) {
-        // for now, generate some dummy package imports to show proof of concept
+        // TODO need scala variant for package exports as well
         List<PackageExport> packageExports = new ArrayList<PackageExport>();
-        final int pkgCnt = (int) (Math.random() * 6 + 1);
-        for (int i = 0; i < pkgCnt; i++) {
-            packageExports.add(new PackageExport()
-                    .setVersion("1.5.0")
-                    .setPackage(randomPackage()));
-        }
+
+//        final int pkgCnt = (int) (Math.random() * 6 + 1);
+//        for (int i = 0; i < pkgCnt; i++) {
+//            packageExports.add(new PackageExport()
+//                    .setVersion("1.5.0")
+//                    .setPackage(randomPackage()));
+//        }
 
         return packageExports;
     }

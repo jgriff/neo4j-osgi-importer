@@ -5,11 +5,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.neo4j.config.EnableNeo4jRepositories;
 import org.springframework.data.neo4j.config.Neo4jConfiguration;
 import org.springframework.data.neo4j.rest.SpringRestGraphDatabase;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * @author <a href="mailto:justinrgriffin@gmail.com">Justin Griffin</a>
@@ -30,12 +32,22 @@ public class Application extends Neo4jConfiguration {
     }
 
     @Bean
-    public Runnable importer() {
-        // TODO accept param args
-        return new BundleDirectoryImporter(new File("/Users/griff/dev/sf2/sf2/assembly/target/sf2-3.2.0-SNAPSHOT/repository/sf2"));
+    public DirectoryImporter directoryImporter() {
+        return new DefaultDirectoryImporter();
     }
 
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args).getBean(Runnable.class).run();
+    @Bean
+    public FileImporter fileImporter() {
+        return new DefaultFileImporter();
+    }
+
+    public static void main(String[] args) throws IOException {
+        // TODO accept param args
+        SpringApplication.run(Application.class, args)
+                .getBean(DirectoryImporter.class)
+                .importBundlesInDirectory(
+                        new File("/Users/griff/dev/tacbrd/tacbrd/assembly/target/tacbrd-1.0.0-SNAPSHOT/repository/tacbrd"),
+                        false
+                );
     }
 }

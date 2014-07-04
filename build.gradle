@@ -15,11 +15,14 @@ task wrapper(type: Wrapper) {
 }
 
 
-apply plugin: "java"
-apply plugin: "spring-boot"
+//apply plugin: "java"
 apply plugin: "scala"
+apply plugin: "spring-boot"
 
 version = "0.0.1"
+
+sourceCompatibility = '1.7'
+targetCompatibility = '1.7'
 
 repositories {
     mavenLocal()
@@ -33,10 +36,11 @@ dependencies {
 //    compile ("org.springframework.boot:spring-boot-starter-data-rest")
     compile ("org.springframework.data:spring-data-neo4j")
     compile ("org.springframework.data:spring-data-neo4j-rest:3.1.1.RELEASE")
+    compile ("org.hibernate:hibernate-validator")
 
-    compile("org.hibernate:hibernate-validator")
-    testCompile("org.scalatest:scalatest_2.10:2.2.0")
-    testCompile("junit:junit:4.6")
+    compile ("org.scala-lang:scala-library:2.10.2")
+    testCompile ("org.scalatest:scalatest_2.10:2.2.0")
+    testCompile ("junit:junit:4.6")
 }
 
 // to debug
