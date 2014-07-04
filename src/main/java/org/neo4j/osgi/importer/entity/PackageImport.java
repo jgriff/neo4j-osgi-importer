@@ -22,6 +22,7 @@ public class PackageImport {
     private boolean minVersionInclusive = true;
     private String maxVersion;
     private boolean maxVersionInclusive = false; // exclusive by default
+    private boolean mandatory = true;
 
     public PackageImport setBundle(Bundle bundle) {
         this.bundle = bundle;
@@ -55,5 +56,30 @@ public class PackageImport {
     public PackageImport setMaxVersionInclusive(boolean maxVersionInclusive) {
         this.maxVersionInclusive = maxVersionInclusive;
         return this;
+    }
+
+    public PackageImport setMandatory(boolean mandatory) {
+        this.mandatory = mandatory;
+        return this;
+    }
+
+    public String getMinVersion() {
+        return minVersion;
+    }
+
+    public boolean isMinVersionInclusive() {
+        return minVersionInclusive;
+    }
+
+    public String getMaxVersion() {
+        return maxVersion;
+    }
+
+    public boolean isMaxVersionInclusive() {
+        return maxVersionInclusive;
+    }
+
+    public boolean isMandatory() {
+        return mandatory;
     }
 }
