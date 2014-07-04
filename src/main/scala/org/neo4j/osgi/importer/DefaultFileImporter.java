@@ -7,6 +7,7 @@ import org.neo4j.osgi.importer.entity.PackageImport;
 import org.neo4j.osgi.importer.repository.BundleRepository;
 import org.neo4j.osgi.importer.repository.PackageRepository;
 import org.neo4j.osgi.parser.Import;
+import org.neo4j.osgi.parser.ImportPackage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,13 +85,9 @@ public class DefaultFileImporter implements FileImporter {
         }
     }
 
-    private <T> List<T> toList(scala.collection.immutable.List<T> scalaList) {
-        List<T> list = scala.collection.JavaConverters.asJavaListConverter(scalaList).asJava();
-        return list;
-    }
 
     private List<PackageImport> parseImportPackageStatement(String importPackage) {
-        return toList(Import.parse(importPackage));
+        return ImportPackage.parse(importPackage);
     }
 
     private List<PackageExport> parseExportPackageStatement(String exportPackage) {
