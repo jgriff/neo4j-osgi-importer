@@ -2,7 +2,8 @@ package org.neo4j.osgi.importer;
 
 import org.neo4j.osgi.importer.entity.PackageExport;
 import org.neo4j.osgi.importer.entity.PackageImport;
-import org.neo4j.osgi.parser.ImportPackage;
+import org.neo4j.osgi.parser.ExportPackageHeader;
+import org.neo4j.osgi.parser.ImportPackageHeader;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,11 +18,11 @@ public class ScalaFileImporter extends AbstractFileImporter {
 
     @Override
     protected Collection<PackageImport> parseImportPackage(String importPackage) {
-        return ImportPackage.parse(importPackage);
+        return ImportPackageHeader.parse(importPackage);
     }
 
     @Override
     protected Collection<PackageExport> parseExportPackage(String exportPackage) {
-        return new ArrayList<PackageExport>(); // TODO parse 'Export-Package'
+        return ExportPackageHeader.parse(exportPackage);
     }
 }

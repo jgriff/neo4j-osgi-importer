@@ -5,7 +5,7 @@ import java.io.IOException;
 
 /**
  * File-based bundle importer.  Imports a bundle and all of its relationships
- * from it's raw file (.jar).
+ * from its raw file (.jar).
  *
  * @author <a href="mailto:justinrgriffin@gmail.com">Justin Griffin</a>
  * @since 0.0.1
