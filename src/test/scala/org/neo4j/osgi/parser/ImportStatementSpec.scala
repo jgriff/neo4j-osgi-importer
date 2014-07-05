@@ -1,8 +1,9 @@
+package org.neo4j.osgi.parser
 
-import org.neo4j.osgi.parser.Import
+
+import org.junit.runner.RunWith
 import org.scalatest.FunSpec
 import org.scalatest.junit.JUnitRunner
-import org.junit.runner.RunWith
 
 /**
  * @author <a href="mailto:brdlmaier49@gmail.com">Bradley Maier</a>
@@ -10,15 +11,15 @@ import org.junit.runner.RunWith
  */
 
 @RunWith(classOf[JUnitRunner])
-class ImportSpec extends FunSpec {
+class ImportStatementSpec extends FunSpec {
   describe("Import") {
     describe("Should parse a single package import statement") {
       it("Should produce an ImportPackage") {
-        assert(Import.parse("my.package.name").length == 1)
+        assert(ImportStatement.parse("my.package.name").length == 1)
       }
 
       it("Should have have the correct name, version, and resolution") {
-        val importPackage = Import.parse("my.package.name")(0)
+        val importPackage = ImportStatement.parse("my.package.name")(0)
         assert(importPackage.getPackage.getName == "my.package.name")
         assert(importPackage.getMinVersion == "0.0.0")
         assert(importPackage.getMaxVersion == null)
@@ -28,7 +29,7 @@ class ImportSpec extends FunSpec {
       }
 
       it("Should correctly parse a version attribute") {
-        val importPackage = Import.parse("my.package.name;version=1.0.0")(0)
+        val importPackage = ImportStatement.parse("my.package.name;version=1.0.0")(0)
         assert(importPackage.getPackage.getName == "my.package.name")
         assert(importPackage.getMinVersion == "1.0.0")
         assert(importPackage.getMaxVersion == null)
@@ -38,7 +39,7 @@ class ImportSpec extends FunSpec {
       }
 
       it("Should correctly parse an inclusive version range") {
-        val importPackage = Import.parse("my.package.name;version=\"[1.0.0,2.0.0]\"")(0)
+        val importPackage = ImportStatement.parse("my.package.name;version=\"[1.0.0,2.0.0]\"")(0)
         assert(importPackage.getPackage.getName == "my.package.name")
         assert(importPackage.getMinVersion == "1.0.0")
         assert(importPackage.getMaxVersion == "2.0.0")
@@ -48,7 +49,7 @@ class ImportSpec extends FunSpec {
       }
 
       it("Should correctly parse an exclusive version range") {
-        val importPackage = Import.parse("my.package.name;version=\"(1.0.0,2.0.0)\"")(0)
+        val importPackage = ImportStatement.parse("my.package.name;version=\"(1.0.0,2.0.0)\"")(0)
         assert(importPackage.getPackage.getName == "my.package.name")
         assert(importPackage.getMinVersion == "1.0.0")
         assert(importPackage.getMaxVersion == "2.0.0")
@@ -58,7 +59,7 @@ class ImportSpec extends FunSpec {
       }
 
       it("Should correctly parse a resolution") {
-        val importPackage = Import.parse("my.package.name;version=\"(1.0.0,2.0.0)\";resolution:=bananas")(0)
+        val importPackage = ImportStatement.parse("my.package.name;version=\"(1.0.0,2.0.0)\";resolution:=bananas")(0)
         assert(importPackage.getPackage.getName == "my.package.name")
         assert(importPackage.getMinVersion == "1.0.0")
         assert(importPackage.getMaxVersion == "2.0.0")
@@ -68,7 +69,7 @@ class ImportSpec extends FunSpec {
       }
 
       it("Should handle multiple package names") {
-        val importPackages = Import.parse(
+        val importPackages = ImportStatement.parse(
           "my.package.name;my.other.package.name;my.third.package.name;version=\"(1.0.0,2.0.0)\";resolution:=bananas"
         )
         assert(importPackages.length == 3)

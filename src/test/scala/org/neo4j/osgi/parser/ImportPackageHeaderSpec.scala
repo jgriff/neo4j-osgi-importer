@@ -1,22 +1,28 @@
-import org.neo4j.osgi.parser.ImportPackage
+package org.neo4j.osgi.parser
+
+import org.junit.runner.RunWith
 import org.scalatest.FunSpec
 import org.scalatest.junit.JUnitRunner
-import org.junit.runner.RunWith
 
 /**
  * @author <a href="mailto:brdlmaier49@gmail.com">Bradley Maier</a>
  * @since 0.0.1
  */
 @RunWith(classOf[JUnitRunner])
-class ImportPackageSpec extends FunSpec {
+class ImportPackageHeaderSpec extends FunSpec {
 
-  describe("ImportPackage") {
+  describe("ImportPackageHeader") {
+    it ("Should handle null and empty strings") {
+      assert(ImportPackageHeader.parse(null).size() == 0)
+      assert(ImportPackageHeader.parse("").size() == 0)
+    }
+
     it("Should handle a single import statement") {
-      assert(ImportPackage.parse("my.package.name;version=\"(1.0.0,2.0.0)\";resolution:=bananas").size() == 1)
+      assert(ImportPackageHeader.parse("my.package.name;version=\"(1.0.0,2.0.0)\";resolution:=bananas").size() == 1)
     }
 
     it("Should handle multiple import statements") {
-      val imports = ImportPackage.parse("my.package.name;my.other.package.name;version=\"(1.0.0,2.0.0)\";resolution:=bananas" +
+      val imports = ImportPackageHeader.parse("my.package.name;my.other.package.name;version=\"(1.0.0,2.0.0)\";resolution:=bananas" +
         ",my.third.package.name;version=\"3.0.0,5.0.0]\";resolution:=mandatory")
       assert(imports.size() == 3)
 
