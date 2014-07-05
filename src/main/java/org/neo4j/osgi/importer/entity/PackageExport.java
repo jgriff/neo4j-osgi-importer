@@ -21,18 +21,26 @@ public class PackageExport {
     /** The version being exported. */
     private String version;
 
+    public Bundle getBundle() {
+        return bundle;
+    }
+
     public PackageExport setBundle(Bundle bundle) {
         this.bundle = bundle;
         return this;
     }
 
-    public Package getPakage() {
+    public Package getPackage() {
         return pakage;
     }
 
     public PackageExport setPackage(Package pakage) {
         this.pakage = pakage;
         return this;
+    }
+
+    public String getVersion() {
+        return version;
     }
 
     public PackageExport setVersion(String version) {

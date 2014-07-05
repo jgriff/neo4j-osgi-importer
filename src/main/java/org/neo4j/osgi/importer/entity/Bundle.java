@@ -3,9 +3,7 @@ package org.neo4j.osgi.importer.entity;
 import org.neo4j.graphdb.Direction;
 import org.springframework.data.neo4j.annotation.*;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author <a href="mailto:justinrgriffin@gmail.com">Justin Griffin</a>
@@ -30,12 +28,20 @@ public class Bundle {
     @RelatedToVia(type = "EXPORTS", direction = Direction.OUTGOING)
     private Set<PackageExport> packageExports;
 
+    public String getBundleSymbolicName() {
+        return bundleSymbolicName;
+    }
+
     public Bundle setBundleSymbolicName(String bundleSymbolicName) {
         this.bundleSymbolicName = bundleSymbolicName;
         if (version != null) {
             bsnAndVersion = bundleSymbolicName + ":" + version;
         }
         return this;
+    }
+
+    public String getVersion() {
+        return version;
     }
 
     public Bundle setVersion(String version) {
@@ -46,11 +52,17 @@ public class Bundle {
         return this;
     }
 
+    public Set<PackageImport> getPackageImports() {
+        return packageImports;
+    }
+
     public Bundle addPackageImport(PackageImport packageImport) {
         if (packageImports == null) {
             packageImports = new HashSet<PackageImport>();
         }
-        packageImports.add(packageImport.setBundle(this));
+        if (packageImport != null) {
+            packageImports.add(packageImport.setBundle(this));
+        }
         return this;
     }
 
@@ -61,11 +73,17 @@ public class Bundle {
         return this;
     }
 
+    public Set<PackageExport> getPackageExports() {
+        return packageExports;
+    }
+
     public Bundle addPackageExport(PackageExport packageExport) {
         if (packageExports == null) {
             packageExports = new HashSet<PackageExport>();
         }
-        packageExports.add(packageExport.setBundle(this));
+        if (packageExport != null) {
+            packageExports.add(packageExport.setBundle(this));
+        }
         return this;
     }
 
@@ -74,5 +92,102 @@ public class Bundle {
             addPackageExport(packageExport);
         }
         return this;
+    }
+
+    public Collection<? extends Package> getImportedPackages() {
+        List<Package> toReturn = new ArrayList<Package>();
+        if (packageImports != null) {
+            for (PackageImport packageImport : packageImports) {
+                Package pkg = packageImport.getPackage();
+                if (pkg != null) {
+                    toReturn.add(pkg);
+                }
+            }
+        }
+        return toReturn;
+    }
+
+    public Collection<? extends Package> getExportedPackages() {
+        List<Package> toReturn = new ArrayList<Package>();
+        if (packageExports != null) {
+            for (PackageExport packageExport : packageExports) {
+                Package pkg = packageExport.getPackage();
+                if (pkg != null) {
+                    toReturn.add(pkg);
+                }
+            }
+        }
+        return toReturn;
+    }
+
+    @Override
+    public String toString() {
+        return "Bundle{" +
+                "bundleSymbolicName='" + bundleSymbolicName + '\'' +
+                ", version='" + version + '\'' +
+                ", packageImports=" + packageImports +
+                ", packageExports=" + packageExports +
+                '}';
+    }
+
+    public static class Builder {
+        private String bundleSymbolicName;
+        private String version;
+        private Set<PackageImport> packageImports;
+        private Set<PackageExport> packageExports;
+
+        public Builder bundleSymbolicName(String bundleSymbolicName) {
+            this.bundleSymbolicName = bundleSymbolicName;
+            return this;
+        }
+
+        public Builder version(String version) {
+            this.version = version;
+            return this;
+        }
+
+        public Builder packageImport(PackageImport packageImport) {
+            if (this.packageImports == null) {
+                this.packageImports = new HashSet<PackageImport>();
+            }
+            this.packageImports.add(packageImport);
+            return this;
+        }
+
+        public Builder packageImports(Collection<PackageImport> packageImports) {
+            if (this.packageImports == null) {
+                this.packageImports = new HashSet<PackageImport>();
+            }
+            this.packageImports.addAll(packageImports);
+            return this;
+        }
+
+        public Builder packageExport(PackageExport packageExport) {
+            if (this.packageExports == null) {
+                this.packageExports = new HashSet<PackageExport>();
+            }
+            if (packageExport != null) {
+                this.packageExports.add(packageExport);
+            }
+            return this;
+        }
+
+        public Builder packageExports(Collection<PackageExport> packageExports) {
+            if (this.packageExports == null) {
+                this.packageExports = new HashSet<PackageExport>();
+            }
+            if (packageExports != null) {
+                this.packageExports.addAll(packageExports);
+            }
+            return this;
+        }
+
+        public Bundle build() {
+            return new Bundle()
+                    .setBundleSymbolicName(bundleSymbolicName)
+                    .setVersion(version)
+                    .addPackageImports(packageImports)
+                    .addPackageExports(packageExports);
+        }
     }
 }

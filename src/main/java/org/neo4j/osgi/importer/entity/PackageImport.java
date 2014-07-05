@@ -24,12 +24,16 @@ public class PackageImport {
     private boolean maxVersionInclusive = false; // exclusive by default
     private boolean mandatory = true;
 
+    public Bundle getBundle() {
+        return bundle;
+    }
+
     public PackageImport setBundle(Bundle bundle) {
         this.bundle = bundle;
         return this;
     }
 
-    public Package getPakage() {
+    public Package getPackage() {
         return pakage;
     }
 
@@ -38,14 +42,26 @@ public class PackageImport {
         return this;
     }
 
+    public String getMinVersion() {
+        return minVersion;
+    }
+
     public PackageImport setMinVersion(String minVersion) {
         this.minVersion = minVersion;
         return this;
     }
 
+    public boolean isMinVersionInclusive() {
+        return minVersionInclusive;
+    }
+
     public PackageImport setMinVersionInclusive(boolean minVersionInclusive) {
         this.minVersionInclusive = minVersionInclusive;
         return this;
+    }
+
+    public String getMaxVersion() {
+        return maxVersion;
     }
 
     public PackageImport setMaxVersion(String maxVersion) {
@@ -58,28 +74,16 @@ public class PackageImport {
         return this;
     }
 
-    public PackageImport setMandatory(boolean mandatory) {
-        this.mandatory = mandatory;
-        return this;
-    }
-
-    public String getMinVersion() {
-        return minVersion;
-    }
-
-    public boolean isMinVersionInclusive() {
-        return minVersionInclusive;
-    }
-
-    public String getMaxVersion() {
-        return maxVersion;
-    }
-
     public boolean isMaxVersionInclusive() {
         return maxVersionInclusive;
     }
 
     public boolean isMandatory() {
         return mandatory;
+    }
+
+    public PackageImport setMandatory(boolean mandatory) {
+        this.mandatory = mandatory;
+        return this;
     }
 }

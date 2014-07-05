@@ -1,23 +1,24 @@
 = Neo4j OSGi Importer =
 
-Scans a directory for OSGi bundles and imports them into a http://neo4j.com[Neo4j]
-database, storing the bundle information and it's package import/export relationships.
+Scans a directory for OSGi bundles and imports them into a http://neo4j.com[Neo4j] database, storing the bundle information and it's package import/export relationships.
+
 Currently very prototype-ish.
 
 == How to Use ==
 
-Currently there is no config options, so you must edit `org.neo4j.osgi.importer.Application`
-for your environment.  It's pretty self-explanatory, but here's the bean you want
-to edit.
+There are no config options _yet_, so you must edit `org.neo4j.osgi.importer.Application` for your environment.  It's pretty self-explanatory, just edit the directory (that's currently hardcoded) to scan.  Just change it to the directory you want to parse for OSGi bundles.
 
-Just change it to the directory you want to parse for OSGi bundles.
-
-    @Bean
-    public Runnable importer() {
+```java
+    public static void main(String[] args) throws IOException {
         // TODO accept param args
-        return new BundleDirectoryImporter(new File("/Users/griff/dev/sf2/sf2/assembly/target/sf2-3.2.0-SNAPSHOT/repository/sf2"));
+        SpringApplication.run(Application.class, args)
+                .getBean(DirectoryImporter.class)
+                .importBundlesInDirectory(
+                        new File("/your/directory/to/scan/for/bundles"),
+                        false
+                );
     }
-
+```
 
 == Running ==
 
@@ -25,10 +26,9 @@ First, you need neo4j running in standalone (we'll access it over REST).
 
 Then just run Spring Boot via Gradle:
 
+```bash
   ./gradlew bootRun
+```
 
-
-If it finishes successfully, you should be able to open http://localhost:7474 and see
-all of the bundles.  It is actually scanning the bundles and reading their
-`Bundle-SymbolicName`, `Import-Package`, and `Export-Package` headers.  Currently the
-package relationships are all canned (parsing `Import-Package` headers is not completely trivial).  But you get the idea.
+Once it finishes, you should be able to open http://localhost:7474 and see all of the bundles.
+It is actually scanning the bundles and reading their `Bundle-SymbolicName`, `Import-Package`, and (soon) `Export-Package` headers.

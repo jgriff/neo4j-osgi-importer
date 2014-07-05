@@ -5,7 +5,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.neo4j.config.EnableNeo4jRepositories;
 import org.springframework.data.neo4j.config.Neo4jConfiguration;
 import org.springframework.data.neo4j.rest.SpringRestGraphDatabase;
@@ -31,15 +30,8 @@ public class Application extends Neo4jConfiguration {
 //        return new GraphDatabaseFactory().newEmbeddedDatabase("build/hello.db");
     }
 
-    @Bean
-    public DirectoryImporter directoryImporter() {
-        return new DefaultDirectoryImporter();
-    }
-
-    @Bean
-    public FileImporter fileImporter() {
-        return new DefaultFileImporter();
-    }
+    @Bean public DirectoryImporter directoryImporter() { return new DefaultDirectoryImporter(); }
+    @Bean public FileImporter fileImporter() { return new ScalaFileImporter(); }
 
     public static void main(String[] args) throws IOException {
         // TODO accept param args

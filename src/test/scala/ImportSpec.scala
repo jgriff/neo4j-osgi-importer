@@ -19,7 +19,7 @@ class ImportSpec extends FunSpec {
 
       it("Should have have the correct name, version, and resolution") {
         val importPackage = Import.parse("my.package.name")(0)
-        assert(importPackage.getPakage.getName == "my.package.name")
+        assert(importPackage.getPackage.getName == "my.package.name")
         assert(importPackage.getMinVersion == "0.0.0")
         assert(importPackage.getMaxVersion == null)
         assert(importPackage.isMinVersionInclusive)
@@ -29,7 +29,7 @@ class ImportSpec extends FunSpec {
 
       it("Should correctly parse a version attribute") {
         val importPackage = Import.parse("my.package.name;version=1.0.0")(0)
-        assert(importPackage.getPakage.getName == "my.package.name")
+        assert(importPackage.getPackage.getName == "my.package.name")
         assert(importPackage.getMinVersion == "1.0.0")
         assert(importPackage.getMaxVersion == null)
         assert(importPackage.isMinVersionInclusive)
@@ -39,7 +39,7 @@ class ImportSpec extends FunSpec {
 
       it("Should correctly parse an inclusive version range") {
         val importPackage = Import.parse("my.package.name;version=\"[1.0.0,2.0.0]\"")(0)
-        assert(importPackage.getPakage.getName == "my.package.name")
+        assert(importPackage.getPackage.getName == "my.package.name")
         assert(importPackage.getMinVersion == "1.0.0")
         assert(importPackage.getMaxVersion == "2.0.0")
         assert(importPackage.isMinVersionInclusive)
@@ -49,7 +49,7 @@ class ImportSpec extends FunSpec {
 
       it("Should correctly parse an exclusive version range") {
         val importPackage = Import.parse("my.package.name;version=\"(1.0.0,2.0.0)\"")(0)
-        assert(importPackage.getPakage.getName == "my.package.name")
+        assert(importPackage.getPackage.getName == "my.package.name")
         assert(importPackage.getMinVersion == "1.0.0")
         assert(importPackage.getMaxVersion == "2.0.0")
         assert(!importPackage.isMinVersionInclusive)
@@ -59,7 +59,7 @@ class ImportSpec extends FunSpec {
 
       it("Should correctly parse a resolution") {
         val importPackage = Import.parse("my.package.name;version=\"(1.0.0,2.0.0)\";resolution:=bananas")(0)
-        assert(importPackage.getPakage.getName == "my.package.name")
+        assert(importPackage.getPackage.getName == "my.package.name")
         assert(importPackage.getMinVersion == "1.0.0")
         assert(importPackage.getMaxVersion == "2.0.0")
         assert(!importPackage.isMinVersionInclusive)
@@ -76,21 +76,21 @@ class ImportSpec extends FunSpec {
         val myOtherPackage = importPackages(1)
         val myThirdPackage = importPackages(2)
 
-        assert(myPackage.getPakage.getName == "my.package.name")
+        assert(myPackage.getPackage.getName == "my.package.name")
         assert(myPackage.getMinVersion == "1.0.0")
         assert(myPackage.getMaxVersion == "2.0.0")
         assert(!myPackage.isMinVersionInclusive)
         assert(!myPackage.isMandatory)
         assert(!myPackage.isMaxVersionInclusive)
 
-        assert(myOtherPackage.getPakage.getName == "my.other.package.name")
+        assert(myOtherPackage.getPackage.getName == "my.other.package.name")
         assert(myOtherPackage.getMinVersion == "1.0.0")
         assert(myOtherPackage.getMaxVersion == "2.0.0")
         assert(!myOtherPackage.isMinVersionInclusive)
         assert(!myOtherPackage.isMandatory)
         assert(!myOtherPackage.isMaxVersionInclusive)
 
-        assert(myThirdPackage.getPakage.getName == "my.third.package.name")
+        assert(myThirdPackage.getPackage.getName == "my.third.package.name")
         assert(myThirdPackage.getMinVersion == "1.0.0")
         assert(myThirdPackage.getMaxVersion == "2.0.0")
         assert(!myThirdPackage.isMinVersionInclusive)

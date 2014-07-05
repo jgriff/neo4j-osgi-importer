@@ -22,7 +22,9 @@ public class DefaultDirectoryImporter implements DirectoryImporter {
         if (directory == null  ||  !directory.exists()) throw new IllegalArgumentException("Directory does not exist: " + directory);
 
         // scan the directory, parse for osgi bundles, and populate the database
-        for (File file : directory.listFiles()) {
+        File[] files = directory.listFiles();
+        if (files == null || files.length <= 0) throw new IllegalArgumentException("Directory is empty.");
+        for (File file : files) {
             if (file.isDirectory() && recursively) {
                 importBundlesInDirectory(directory, recursively);
             } else if (file.exists() && file.getName().toLowerCase().endsWith(".jar")) {
