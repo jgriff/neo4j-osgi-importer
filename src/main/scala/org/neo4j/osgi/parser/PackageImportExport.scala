@@ -1,5 +1,6 @@
 package org.neo4j.osgi.parser
 
+import org.neo4j.osgi.{Attribute, Directive}
 import org.neo4j.osgi.importer.entity.Package
 
 /**
@@ -14,7 +15,7 @@ private object PackageImportExport {
 
   /*TODO Decide whether defining what are essentially key values pairs in a directive and attribute class is
   worth the added type information */
-  def parsePackageImportExportStatment(statement: String): (List[Package], List[(String, String)], List[(String, String)]) = {
+  def parsePackageImportExportStatment(statement: String): (List[Package], List[Directive], List[Attribute]) = {
     val packageNamesAndParameters = statement.split(";")
 
     val packages = packageNamesAndParameters.filter(
@@ -27,8 +28,8 @@ private object PackageImportExport {
 
     return (
       packages.map(new Package(_)),
-      directives.map(directive => (directive.split(":=")(0), directive.split(":=")(1).filterNot(_ == '"'))),
-      attributes.map(attribute => (attribute.split("=")(0), attribute.split("=")(1).filterNot(_ == '"')))
+      directives.map(directive => Directive(directive.split(":=")(0), directive.split(":=")(1).filterNot(_ == '"'))),
+      attributes.map(attribute => Attribute(attribute.split("=")(0), attribute.split("=")(1).filterNot(_ == '"')))
       )
 
   }
