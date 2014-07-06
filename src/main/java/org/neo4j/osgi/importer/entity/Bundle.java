@@ -120,6 +120,23 @@ public class Bundle {
         return toReturn;
     }
 
+    public Collection<? extends Package> getUsedPackages() {
+        List<Package> toReturn = new ArrayList<Package>();
+        if (packageExports != null) {
+            for (PackageExport packageExport : packageExports) {
+                Package pkg = packageExport.getPackage();
+                if (pkg != null) {
+                    for (Uses uses : pkg.getUsesPackages()) {
+                        if (uses != null && uses.getUses() != null) {
+                                   toReturn.add(uses.getUses());
+                        }
+                    }
+                }
+            }
+        }
+        return toReturn;
+    }
+
     @Override
     public String toString() {
         return "Bundle{" +
