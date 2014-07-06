@@ -38,7 +38,7 @@ public class Application extends Neo4jConfiguration {
         SpringApplication.run(Application.class, args)
                 .getBean(DirectoryImporter.class)
                 .importBundlesInDirectory(
-                        new File("C:/Users/Bradley/.m2/repository/mil/jpmis/jwarn/api/mil.jpmis.jwarn.api/4.0.0-SNAPSHOT"),
+                        new File("/Users/griff/dev/tacbrd/tacbrd/assembly/target/tacbrd-1.0.0-SNAPSHOT/repository/tacbrd"),
                         false
                 );
     }

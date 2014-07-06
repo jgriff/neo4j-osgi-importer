@@ -19,9 +19,9 @@ public class Package {
 
     @Fetch
     @RelatedToVia(type = "USES", direction = Direction.OUTGOING)
-    private Set<Uses> usesPackages;
+    private Set<Uses> usesPackages = new HashSet<Uses>();
 
-    public Package() { usesPackages = new HashSet<Uses>();}
+    public Package() {}
 
     public Package(String name) {
         this.name = name;

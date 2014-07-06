@@ -1,9 +1,7 @@
 package org.neo4j.osgi.importer;
 
-import org.neo4j.osgi.importer.entity.Bundle;
+import org.neo4j.osgi.importer.entity.*;
 import org.neo4j.osgi.importer.entity.Package;
-import org.neo4j.osgi.importer.entity.PackageExport;
-import org.neo4j.osgi.importer.entity.PackageImport;
 import org.neo4j.osgi.importer.repository.BundleRepository;
 import org.neo4j.osgi.importer.repository.PackageRepository;
 import org.slf4j.Logger;
@@ -33,7 +31,7 @@ public abstract class AbstractFileImporter implements FileImporter {
     private PackageRepository packageRepository;
 
     public void importBundle(File file) throws IOException {
-        if (file == null  ||  !file.exists()) throw new IllegalArgumentException("File does not exist: " + file);
+        if (file == null || !file.exists()) throw new IllegalArgumentException("File does not exist: " + file);
 
         LOG.trace("Inspecting bundle: " + file);
         JarInputStream jarStream = new JarInputStream(new FileInputStream(file));
@@ -57,10 +55,29 @@ public abstract class AbstractFileImporter implements FileImporter {
         packages.addAll(bundle.getImportedPackages());
         packages.addAll(bundle.getExportedPackages());
         packages.addAll(bundle.getUsedPackages());
+        List<Set<Uses>> holdUses = stripUses(packages);
         packageRepository.save(packages);
-
+        replaceUses(holdUses, packages);
+        packageRepository.save(packages);
         // now save the bundle and it's relationships
         bundleRepository.save(bundle);
+    }
+
+    private List<Set<Uses>> stripUses(List<Package> packages) {
+        List<Set<Uses>> uses = new ArrayList<Set<Uses>>();
+        for (Package pakage : packages) {
+            uses.add(pakage.getUsesPackages());
+            pakage.setUsesPackages(new HashSet<Uses>());
+        }
+        return uses;
+    }
+
+    private void replaceUses(List<Set<Uses>> holdUses, List<Package> packages) {
+        int i = 0;
+        for (Package pakage: packages) {
+            pakage.setUsesPackages(holdUses.get(i));
+            i++;
+        }
     }
 
     protected String parseBundleSymbolicName(String bsn) { return bsn; }
