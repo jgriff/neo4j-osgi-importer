@@ -10,7 +10,7 @@ import java.io.IOException;
  * @author <a href="mailto:justinrgriffin@gmail.com">Justin Griffin</a>
  * @since 0.0.1
  */
-public interface FileImporter {
+public interface FileBundleImporter {
     /**
      * If the specified file is an OSGi bundle, it is imported by harvesting all
      * available information in the file (such as the <code>MANIFEST.MF</code>).

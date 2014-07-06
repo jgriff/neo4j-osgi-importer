@@ -30,16 +30,16 @@ public class Application extends Neo4jConfiguration {
 //        return new GraphDatabaseFactory().newEmbeddedDatabase("build/hello.db");
     }
 
-    @Bean public DirectoryImporter directoryImporter() { return new DefaultDirectoryImporter(); }
-    @Bean public FileImporter fileImporter() { return new ScalaFileImporter(); }
+    @Bean public DirectoryBundleImporter directoryImporter() { return new DefaultDirectoryBundleImporter(); }
+    @Bean public FileBundleImporter fileImporter() { return new DefaultFileBundleImporter(); }
 
     public static void main(String[] args) throws IOException {
         // TODO accept param args
         SpringApplication.run(Application.class, args)
-                .getBean(DirectoryImporter.class)
+                .getBean(DirectoryBundleImporter.class)
                 .importBundlesInDirectory(
-                        new File("/Users/griff/dev/tacbrd/tacbrd/assembly/target/tacbrd-1.0.0-SNAPSHOT/repository/tacbrd"),
-                        false
+                        new File("/Users/griff/dev/tacbrd/tacbrd/assembly/target/tacbrd-1.0.0-SNAPSHOT/repository"),
+                        true
                 );
     }
 }

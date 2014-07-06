@@ -11,11 +11,11 @@ import java.io.IOException;
  * @author <a href="mailto:justinrgriffin@gmail.com">Justin Griffin</a>
  * @since 0.0.1
  */
-public class DefaultDirectoryImporter implements DirectoryImporter {
-    private static final Logger LOG = LoggerFactory.getLogger(DefaultDirectoryImporter.class);
+public class DefaultDirectoryBundleImporter implements DirectoryBundleImporter {
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultDirectoryBundleImporter.class);
 
     @Autowired
-    private FileImporter fileImporter;
+    private FileBundleImporter fileBundleImporter;
 
     @Override
     public void importBundlesInDirectory(File directory, boolean recursively) throws IOException, IllegalArgumentException {
@@ -26,10 +26,10 @@ public class DefaultDirectoryImporter implements DirectoryImporter {
         if (files == null || files.length <= 0) throw new IllegalArgumentException("Directory is empty.");
         for (File file : files) {
             if (file.isDirectory() && recursively) {
-                importBundlesInDirectory(directory, recursively);
+                importBundlesInDirectory(file, recursively);
             } else if (file.exists() && file.getName().toLowerCase().endsWith(".jar")) {
                 try {
-                    fileImporter.importBundle(file);
+                    fileBundleImporter.importBundle(file);
                 } catch (Throwable t) {
                     LOG.error("Error inspecting bundle: " + file, t);
                 }

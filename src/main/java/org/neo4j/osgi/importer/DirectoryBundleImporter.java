@@ -9,7 +9,7 @@ import java.io.IOException;
  * @author <a href="mailto:justinrgriffin@gmail.com">Justin Griffin</a>
  * @since 0.0.1
  */
-public interface DirectoryImporter {
+public interface DirectoryBundleImporter {
     /**
      * Looks in the specified directory and imports all files that are OSGi bundles.
      *

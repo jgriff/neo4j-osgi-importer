@@ -13,7 +13,7 @@ import java.util.*;
 public class Bundle {
     @GraphId private Long id;
 
-    private String bundleSymbolicName;
+    private String bsn;
     private String version;
 
     // temporary hack to support "BSN + version = uniqueness"
@@ -29,11 +29,11 @@ public class Bundle {
     private Set<PackageExport> packageExports;
 
     public String getBundleSymbolicName() {
-        return bundleSymbolicName;
+        return bsn;
     }
 
     public Bundle setBundleSymbolicName(String bundleSymbolicName) {
-        this.bundleSymbolicName = bundleSymbolicName;
+        this.bsn = bundleSymbolicName;
         if (version != null) {
             bsnAndVersion = bundleSymbolicName + ":" + version;
         }
@@ -46,8 +46,8 @@ public class Bundle {
 
     public Bundle setVersion(String version) {
         this.version = version;
-        if (bundleSymbolicName != null) {
-            bsnAndVersion = bundleSymbolicName + ":" + version;
+        if (bsn != null) {
+            bsnAndVersion = bsn + ":" + version;
         }
         return this;
     }
@@ -123,7 +123,7 @@ public class Bundle {
     @Override
     public String toString() {
         return "Bundle{" +
-                "bundleSymbolicName='" + bundleSymbolicName + '\'' +
+                "bundleSymbolicName='" + bsn + '\'' +
                 ", version='" + version + '\'' +
                 ", packageImports=" + packageImports +
                 ", packageExports=" + packageExports +

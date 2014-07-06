@@ -21,13 +21,13 @@ import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
 
 /**
- * Abstract {@link FileImporter}, leaving complex parsing operations to subclasses.
+ * Abstract {@link FileBundleImporter}, leaving complex parsing operations to subclasses.
  *
  * @author <a href="mailto:justinrgriffin@gmail.com">Justin Griffin</a>
  * @since 0.0.1
  */
-public abstract class AbstractFileImporter implements FileImporter {
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractFileImporter.class);
+public abstract class AbstractFileBundleImporter implements FileBundleImporter {
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractFileBundleImporter.class);
 
     @Autowired
     private BundleRepository bundleRepository;

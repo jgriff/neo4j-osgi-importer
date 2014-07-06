@@ -1,10 +1,10 @@
-= Neo4j OSGi Importer =
+# Neo4j OSGi Importer
 
 Scans a directory for OSGi bundles and imports them into a http://neo4j.com[Neo4j] database, storing the bundle information and it's package import/export relationships.
 
 Currently very prototype-ish.
 
-== How to Use ==
+## How to Use
 
 There are no config options _yet_, so you must edit `org.neo4j.osgi.importer.Application` for your environment.  It's pretty self-explanatory, just edit the directory (that's currently hardcoded) to scan.  Just change it to the directory you want to parse for OSGi bundles.
 
@@ -20,7 +20,7 @@ There are no config options _yet_, so you must edit `org.neo4j.osgi.importer.App
     }
 ```
 
-== Running ==
+## Running 
 
 First, you need neo4j running in standalone (we'll access it over REST).
 
