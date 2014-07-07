@@ -28,4 +28,14 @@ class PackageSpec extends Specification {
         then:
         sut.getName() == null
     }
+
+    def "adding a UsesConstraint should implicitly set 'constrainedPackage' property"() {
+        UsesConstraint uc = new UsesConstraint();
+
+        when:
+        sut.addUsesConstraint(uc)
+
+        then:
+        uc.getConstrainedPackage() == sut
+    }
 }

@@ -1,9 +1,7 @@
 package org.neo4j.osgi.importer;
 
-import org.neo4j.osgi.importer.entity.Bundle;
+import org.neo4j.osgi.importer.entity.*;
 import org.neo4j.osgi.importer.entity.Package;
-import org.neo4j.osgi.importer.entity.PackageExport;
-import org.neo4j.osgi.importer.entity.PackageImport;
 import org.neo4j.osgi.importer.repository.BundleRepository;
 import org.neo4j.osgi.importer.repository.PackageRepository;
 import org.slf4j.Logger;

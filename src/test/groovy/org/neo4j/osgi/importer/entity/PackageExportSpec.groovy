@@ -40,4 +40,46 @@ class PackageExportSpec extends Specification {
         then:
         sut.getVersion() == "1.0.0"
     }
+
+    def "setting the bundle should implicitly hook the 'Bundle' to 'UsesConstraint#provider' for any/all of the UsesConstraints."() {
+        Bundle bundle = new Bundle()
+
+        // add some pre-existing packages
+        Package fooPkg = new Package("com.foo")
+        Package barPkg = new Package("com.bar")
+
+        // a uses constraint
+        UsesConstraint uc = new UsesConstraint().setPackagedUsed(barPkg)
+
+        // the constraint exists on foo --> bar
+        fooPkg.addUsesConstraint(uc)
+
+        when:
+        sut.setPackage(fooPkg)
+        sut.setBundle(bundle)
+
+        then:
+        uc.getBundle() == bundle
+    }
+
+    def "setting the package should implicitly hook the 'Bundle' to 'UsesConstraint#provider' for any/all of the UsesConstraints in the package."() {
+        Bundle bundle = new Bundle()
+
+        // some new packages
+        Package fooPkg = new Package("com.foo")
+        Package barPkg = new Package("com.bar")
+
+        // a uses constraint
+        UsesConstraint uc = new UsesConstraint().setPackagedUsed(barPkg)
+
+        // the constraint exists on foo --> bar
+        fooPkg.addUsesConstraint(uc)
+
+        when:
+        sut.setBundle(bundle)
+        sut.setPackage(fooPkg)
+
+        then:
+        uc.getBundle() == bundle
+    }
 }

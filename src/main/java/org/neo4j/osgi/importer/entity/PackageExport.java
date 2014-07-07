@@ -5,6 +5,8 @@ import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.RelationshipEntity;
 import org.springframework.data.neo4j.annotation.StartNode;
 
+import java.util.Set;
+
 /**
  * @author <a href="mailto:justinrgriffin@gmail.com">Justin Griffin</a>
  * @since 0.0.1
@@ -16,7 +18,7 @@ public class PackageExport {
     /** The bundle exporting the package. */
     @StartNode private Bundle bundle;
     /** The package being imported. */
-    @EndNode private Package pakage;
+    @EndNode private Package pkg;
 
     /** The version being exported. */
     private String version;
@@ -27,16 +29,16 @@ public class PackageExport {
 
     public PackageExport setBundle(Bundle bundle) {
         this.bundle = bundle;
-        return this;
+        return syncUsesConstraints();
     }
 
     public Package getPackage() {
-        return pakage;
+        return pkg;
     }
 
     public PackageExport setPackage(Package pakage) {
-        this.pakage = pakage;
-        return this;
+        this.pkg = pakage;
+        return syncUsesConstraints();
     }
 
     public String getVersion() {
@@ -45,6 +47,19 @@ public class PackageExport {
 
     public PackageExport setVersion(String version) {
         this.version = version;
+        return this;
+    }
+
+    private PackageExport syncUsesConstraints() {
+        // if we have any uses constraints in our package, set them to our bundle
+        if (pkg != null && bundle != null) {
+            Set<UsesConstraint> usesConstraints = pkg.getUsesConstraints();
+            if (usesConstraints != null) {
+                for (UsesConstraint uc : usesConstraints) {
+                    uc.setBundle(bundle);
+                }
+            }
+        }
         return this;
     }
 }
