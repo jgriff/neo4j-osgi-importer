@@ -34,12 +34,12 @@ public class Application extends Neo4jConfiguration {
     @Bean public FileBundleImporter fileImporter() { return new DefaultFileBundleImporter(); }
 
     public static void main(String[] args) throws IOException {
-        // TODO accept param args
+        if (args.length <= 0) throw new IllegalArgumentException("Please specify (as first arg) the directory to scan for OSGi bundles." +
+        "  You can optinally specify true/false as the second arg, to indicate whether the directory should be scanned recursively (default is false).");
+        boolean recursive = (args.length > 1 && Boolean.valueOf(args[1]));
+
         SpringApplication.run(Application.class, args)
                 .getBean(DirectoryBundleImporter.class)
-                .importBundlesInDirectory(
-                        new File("/Users/griff/dev/tacbrd/tacbrd/assembly/target/tacbrd-1.0.0-SNAPSHOT/repository"),
-                        true
-                );
+                .importBundlesInDirectory( new File(args[0]), recursive );
     }
 }
