@@ -120,6 +120,23 @@ public class Bundle {
         return toReturn;
     }
 
+    public Collection<? extends Package> getUsedPackages() {
+        List<Package> toReturn = new ArrayList<Package>();
+        if (packageExports != null) {
+            for (PackageExport packageExport : packageExports) {
+                Package pkg = packageExport.getPackage();
+                if (pkg != null) {
+                    for (UsesConstraint usesConstraint : pkg.getUsesConstraints()) {
+                        if (usesConstraint != null && usesConstraint.getPackageUsed() != null) {
+                                   toReturn.add(usesConstraint.getPackageUsed());
+                        }
+                    }
+                }
+            }
+        }
+        return toReturn;
+    }
+
     @Override
     public String toString() {
         return "Bundle{" +

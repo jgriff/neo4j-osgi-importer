@@ -49,7 +49,7 @@ class PackageExportSpec extends Specification {
         Package barPkg = new Package("com.bar")
 
         // a uses constraint
-        UsesConstraint uc = new UsesConstraint().setPackagedUsed(barPkg)
+        UsesConstraint uc = new UsesConstraint().setPackageUsed(barPkg)
 
         // the constraint exists on foo --> bar
         fooPkg.addUsesConstraint(uc)
@@ -70,7 +70,7 @@ class PackageExportSpec extends Specification {
         Package barPkg = new Package("com.bar")
 
         // a uses constraint
-        UsesConstraint uc = new UsesConstraint().setPackagedUsed(barPkg)
+        UsesConstraint uc = new UsesConstraint().setPackageUsed(barPkg)
 
         // the constraint exists on foo --> bar
         fooPkg.addUsesConstraint(uc)

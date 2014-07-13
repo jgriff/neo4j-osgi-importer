@@ -18,10 +18,10 @@ object ImportStatement {
   def parse(importStatement: String): List[PackageImport] = {
 
     val packagesDirectivesAndAttributes = PackageImportExport.parsePackageImportExportStatment(importStatement)
-    val resolutions = packagesDirectivesAndAttributes._2.filter(_._1.equalsIgnoreCase("resolution"))
-    val resolution = if (resolutions.isEmpty) "mandatory" else resolutions(0)._2
-    val versions = packagesDirectivesAndAttributes._3.filter(_._1.equalsIgnoreCase("version"))
-    val version = if (versions.isEmpty) "0.0.0" else versions(0)._2
+    val resolutions = packagesDirectivesAndAttributes._2.filter(_.key.equalsIgnoreCase("resolution"))
+    val resolution = if (resolutions.isEmpty) "mandatory" else resolutions(0).value
+    val versions = packagesDirectivesAndAttributes._3.filter(_.key.equalsIgnoreCase("version"))
+    val version = if (versions.isEmpty) "0.0.0" else versions(0).value
 
     buildPackageImports(packagesDirectivesAndAttributes._1, resolution, version)
   }
