@@ -11,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.jar.Attributes;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
@@ -56,10 +54,30 @@ public abstract class AbstractFileBundleImporter implements FileBundleImporter {
         List<Package> packages = new ArrayList<Package>();
         packages.addAll(bundle.getImportedPackages());
         packages.addAll(bundle.getExportedPackages());
+        packages.addAll(bundle.getUsedPackages());
+        List<Set<UsesConstraint>> usesConstraintsList = stripUsesConstraints(packages);
         packageRepository.save(packages);
-
+        replaceUses(usesConstraintsList, packages);
+        packageRepository.save(packages);
         // now save the bundle and it's relationships
         bundleRepository.save(bundle);
+    }
+
+    private List<Set<UsesConstraint>> stripUsesConstraints(List<Package> packages) {
+        List<Set<UsesConstraint>> usesConstraintsList = new ArrayList<Set<UsesConstraint>>();
+        for (Package pakage : packages) {
+            usesConstraintsList.add(pakage.getUsesConstraints());
+            pakage.setUsesConstraints(new HashSet<UsesConstraint>());
+        }
+        return usesConstraintsList;
+    }
+
+    private void replaceUses(List<Set<UsesConstraint>> usesConstraintsList, List<Package> packages) {
+        int i = 0;
+        for (Package pakage: packages) {
+            pakage.setUsesConstraints(usesConstraintsList.get(i));
+            i++;
+        }
     }
 
     protected String parseBundleSymbolicName(String bsn) { return bsn; }

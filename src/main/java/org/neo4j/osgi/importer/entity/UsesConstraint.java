@@ -21,7 +21,7 @@ public class UsesConstraint {
     private Package constrainedPackage;
 
     @RelatedTo(type = "USES", direction = Direction.OUTGOING)
-    private Package packagedUsed;
+    private Package packageUsed;
 
     public UsesConstraint() { }
 
@@ -31,11 +31,11 @@ public class UsesConstraint {
      * being exported).  The relationship between (exported package)->(used package)
      * is created when you add this instance to a {@link org.neo4j.osgi.importer.entity.Package}.
      *
-     * @param packagedUsed The package used.
+     * @param packageUsed The package used.
      * @since 0.0.1
      */
-    public UsesConstraint(Package packagedUsed) {
-        this.packagedUsed = packagedUsed;
+    public UsesConstraint(Package packageUsed) {
+        this.packageUsed = packageUsed;
     }
 
 
@@ -57,12 +57,12 @@ public class UsesConstraint {
         return this;
     }
 
-    public Package getPackagedUsed() {
-        return packagedUsed;
+    public Package getPackageUsed() {
+        return packageUsed;
     }
 
-    public UsesConstraint setPackagedUsed(Package packagedUsed) {
-        this.packagedUsed = packagedUsed;
+    public UsesConstraint setPackageUsed(Package packageUsed) {
+        this.packageUsed = packageUsed;
         return this;
     }
 }
