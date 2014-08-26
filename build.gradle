@@ -11,7 +11,7 @@ buildscript {
 
 task wrapper(type: Wrapper) {
   description = "Builds the gradlew wrapper."
-  gradleVersion = '1.12'
+  gradleVersion = '2.0'
 }
 
 
