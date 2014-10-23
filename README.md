@@ -1,8 +1,8 @@
 # Neo4j OSGi Importer
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/jgriff/neo4j-osgi-importer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Scans a directory for OSGi bundles and imports them into a [Neo4j](http://neo4j.com) database, storing the bundle information and it's package import/export relationships.
 
 [![Build Status](https://drone.io/github.com/jgriff/neo4j-osgi-importer/status.png)](https://drone.io/github.com/jgriff/neo4j-osgi-importer/latest)
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/jgriff/neo4j-osgi-importer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Build
 
