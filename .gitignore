@@ -1,0 +1,13 @@
+# IDEA Files
+#############
+*.iml
+.idea
+
+# Build
+#########
+build/
+
+# Gradle Cache
+##############
+.gradle/
+
