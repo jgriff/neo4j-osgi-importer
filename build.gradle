@@ -11,9 +11,8 @@ buildscript {
 
 task wrapper(type: Wrapper) {
   description = "Builds the gradlew wrapper."
-  gradleVersion = '2.0'
+  gradleVersion = '2.2'
 }
-
 
 apply plugin: "java"
 apply plugin: "scala"
@@ -22,8 +21,8 @@ apply plugin: "spring-boot"
 
 version = "0.0.1-SNAPSHOT"
 
-sourceCompatibility = '1.7'
-targetCompatibility = '1.7'
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
 
 repositories {
     mavenLocal()
@@ -38,7 +37,7 @@ dependencies {
     compile ("org.springframework.data:spring-data-neo4j-rest:3.1.1.RELEASE")
     compile ("org.hibernate:hibernate-validator")
 
-    testCompile ("junit:junit:4.6")
+    testCompile ("junit:junit:4.11")
     testCompile ("org.codehaus.groovy:groovy-all:1.8.6")
     testCompile ("org.spockframework:spock-core:0.6-groovy-1.8")
     testCompile ("org.scalatest:scalatest_2.10:2.2.0")
